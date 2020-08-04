@@ -1,7 +1,7 @@
 const mysql = require('sails-mysql');
 const staticsVariables = require('./staticsVariables.js');
 module.exports = {
-  port: 1600,
+  port: process.env.PORT || 1600,
   datastores: {
     default: {
       adapter: mysql,
