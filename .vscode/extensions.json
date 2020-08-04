@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+      "HookyQR.beautify",
+      "dbaeumer.vscode-eslint",
+      "EditorConfig.editorconfig",
+      "eamodio.gitlens",
+      "esbenp.prettier-vscode"
+  ]
+}

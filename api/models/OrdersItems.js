@@ -1,0 +1,28 @@
+/**
+ * OrdersItems.js
+ *
+ * @description :: A model definition.  Represents a database table/collection/etc.
+ * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
+ */
+module.exports = {
+  attributes: {
+    idOrder: {
+      model: 'Orders',
+      required: true
+    },
+    idItem: {
+      model: 'Items',
+      required: true
+    },
+    amount: {
+      type: 'number',
+      defaultsTo: 0,
+      allowNull: false
+    },
+    price: {
+      type: 'number',
+      defaultsTo: 0,
+      allowNull: false
+    }
+  }
+};

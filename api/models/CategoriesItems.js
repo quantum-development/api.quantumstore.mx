@@ -1,0 +1,20 @@
+/**
+ * CategoriesItems.js
+ *
+ * @description :: A model definition.  Represents a database table/collection/etc.
+ * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
+ */
+
+module.exports = {
+  schema: true,
+  attributes: {
+    idItem: {
+      model: 'Items',
+      required: true
+    },
+    idCategory: {
+      model: 'Categories',
+      required: true
+    }
+  }
+};

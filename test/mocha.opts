@@ -1,0 +1,4 @@
+--u bdd
+--recursive
+--timeout 10000
+--exit
