@@ -1,11 +1,15 @@
 const mysql = require('sails-mysql');
 const staticsVariables = require('./staticsVariables.js');
+const db_host = process.env.DB_HST || '0.0.0.0:4306';
+const db_user = process.env.DB_USR || 'root';
+const db_pwd = process.env.DB_PWD || 'root';
+const db_name = process.env.DB_NME || 'qrewards';
 module.exports = {
   port: process.env.PORT || 1600,
   datastores: {
     default: {
       adapter: mysql,
-      url: 'mysql://root:root@0.0.0.0:4306/qrewards'
+      url: `mysql://${db_user}:${db_pwd}@${db_host}/${db_name}`
     }
   },
   models: {

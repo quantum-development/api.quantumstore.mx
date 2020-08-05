@@ -22,5 +22,4 @@ lib-cov
 coverage
 .scannerwork
 \.nyc_output/
-config/env/production\.js
 package-lock.json

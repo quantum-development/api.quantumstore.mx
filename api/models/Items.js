@@ -15,9 +15,8 @@ module.exports = {
     },
     description: {
       type: 'string',
-      required: true,
-      minLength: 2,
-      maxLength: 250
+      required: false,
+      minLength: 2
     },
     imgThumbnail: {
       type: 'string',
