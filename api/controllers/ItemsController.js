@@ -117,6 +117,25 @@ module.exports = {
     } else {
       item.images = [];
     }
+
+    for (const price of item.prices) {
+      const purchase_options = await PricesPurchaseOptions.find({
+        idPrice: price.id
+      })
+        .intercept(_err => {
+          return res.badRequest(
+            {},
+            {
+              message: `There an error on DB`
+            }
+          );
+        });
+      if (purchase_options) {
+        price.purchase_options = purchase_options;
+      } else {
+        item.purchase_options = [];
+      }
+    }
     return res.ok(item);
   }
 };
