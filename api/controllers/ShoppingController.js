@@ -26,6 +26,7 @@ module.exports = {
 
     findData.idUser = findData.idUser === 0 ? null : findData.idUser;
 
+    console.log(ShoppingCart);
     //Get Shipping Cart
     let shopingData = await ShoppingCart.findOne(findData).intercept(_err => {
       return res.badRequest(
