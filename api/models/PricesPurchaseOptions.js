@@ -16,14 +16,13 @@ module.exports = {
         },
         sku: {
             type: 'string',
-            required: true,
-            minLength: 2,
-            maxLength: 150
+            required: false,
+            allowNull: true
         },
         description: {
             type: 'string',
-            required: true,
-            minLength: 2
+            required: false,
+            allowNull: true
         },
         deleted: {
             type: 'boolean',

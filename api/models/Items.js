@@ -16,7 +16,12 @@ module.exports = {
     description: {
       type: 'string',
       required: false,
-      minLength: 2
+      allowNull: true
+    },
+    external_purchase: {
+      type: 'string',
+      required: false,
+      allowNull: true
     },
     imgThumbnail: {
       type: 'string',

@@ -62,6 +62,10 @@ module.exports = {
       type: 'number',
       defaultsTo: 0
     },
+    emailVerificated: {
+      type: 'number',
+      defaultsTo: 0
+    },
     lastPasswordFailure: {
       type: 'ref',
       columnType: 'datetime'
@@ -84,7 +88,7 @@ module.exports = {
       via: 'idUser'
     }
   },
-  customToJSON: function() {
+  customToJSON: function () {
     return _.omit(this, [
       'password',
       'locked',

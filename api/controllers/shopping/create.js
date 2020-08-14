@@ -62,17 +62,26 @@ module.exports = async (req, res) => {
   item.images = images.map(image => image.idImage);
   item.images = item.images.filter(image => image.deleted === false);
 
-  const imageItem = item.images[0] ? item.images[0].src : '';
+  const imageItem = item.images.length ? item.images.map(image => image.src) : [];
+  const purchaseOption = params.purchase_option || null;
 
-  let price = await item.prices.find(price => price.price === params.price);
-  price = price || {};
-  price = price.price || 0;
+  let priceData = await item.prices.find(price => price.price === params.price);
+  if (!priceData) {
+    return res.notFound(
+      {},
+      {
+        message: `The item price doesn't exists`
+      }
+    );
+  }
+  priceData = priceData || {};
+  price = priceData.price || 0;
 
   if (shopingData) {
     const dataCart = shopingData.data;
     let dataCartJson = validateJSON(dataCart);
     let items = dataCartJson.items;
-    let itemIndex = items.findIndex(item => item.id === req.item.id);
+    let itemIndex = items.findIndex(item => item.id === req.item.id && item.price === price && item.purchaseOptions === purchaseOption);
     if (item) {
       if (itemIndex > -1) {
         let itemData = items[itemIndex];
@@ -96,7 +105,10 @@ module.exports = async (req, res) => {
           amount,
           total,
           name: item.name,
-          image: imageItem
+          priceLabel: priceData.label,
+          purchaseOptions: purchaseOption,
+          image: imageItem,
+          imgThumbnail: item.imgThumbnail
         });
         dataCartJson.items = items;
         data = dataCartJson;
@@ -127,7 +139,10 @@ module.exports = async (req, res) => {
       amount,
       total,
       name: item.name,
-      image: imageItem
+      priceLabel: priceData.label,
+      purchaseOptions: purchaseOption,
+      image: imageItem,
+      imgThumbnail: item.imgThumbnail
     });
     data.items = items;
     shopingData.total = total;

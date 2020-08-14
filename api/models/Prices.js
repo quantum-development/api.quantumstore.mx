@@ -16,18 +16,13 @@ module.exports = {
     price: {
       type: 'number',
       defaultsTo: 0,
+      columnType: 'float',
       allowNull: false
     },
     description: {
       type: 'string',
       required: false,
-      minLength: 2
-    },
-    external_purchase: {
-      type: 'string',
-      required: false,
-      minLength: 2,
-      maxLength: 250
+      allowNull: true
     },
     purchaseoptions: {
       collection: 'PricesPurchaseOptions',
