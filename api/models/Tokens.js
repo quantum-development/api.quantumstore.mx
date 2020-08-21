@@ -21,7 +21,7 @@ module.exports = {
     },
     type: {
       type: 'string',
-      isIn: ['register', 'login', 'change', 'reset'],
+      isIn: ['register', 'login', 'verify', 'change', 'reset'],
       required: true
     },
     rtkn: {

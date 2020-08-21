@@ -20,6 +20,7 @@ module.exports.policies = {
       'isTheEmailTaken'
     ],
     login: ['oauth/login'],
+    verify: ['oauth/verify'],
     change: ['oauth/change', 'hasToken'],
     forgot: ['oauth/forgot'],
     reset: ['oauth/reset'],

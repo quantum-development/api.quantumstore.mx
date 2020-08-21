@@ -16,6 +16,9 @@ module.exports.routes = {
   'POST /users/oauth/login': {
     action: 'oauth/login'
   },
+  'GET /users/oauth/verify': {
+    action: 'oauth/verify'
+  },
   'POST /users/oauth/change': {
     action: 'oauth/change'
   },

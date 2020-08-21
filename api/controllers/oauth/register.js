@@ -8,6 +8,20 @@
 module.exports = async (req, res) => {
   const params = req.allParams();
 
+  const recaptcha = await sails.helpers.recaptcha(
+    params['g-recaptcha-response'],
+    req.connection.remoteAddress
+  );
+
+  if (!recaptcha) {
+    return res.badRequest(
+      {},
+      {
+        message: `reCaptcha is invalid.`
+      }
+    );
+  }
+
   // Create new user
   let newUser = await Users.create({
     username: params.username,
@@ -23,6 +37,9 @@ module.exports = async (req, res) => {
       return res.negotiate(err);
     })
     .fetch();
+
+  // Send a Verification email token
+  await sails.helpers.generateVerificationKey(newUser);
 
   // Get New token
   const token = await sails.helpers.generateToken(newUser);

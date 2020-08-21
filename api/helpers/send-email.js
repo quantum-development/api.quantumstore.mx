@@ -15,17 +15,28 @@ module.exports = {
       required: true
     }
   },
+
   exits: {},
+
   fn: async function(inputs, exits) {
-    let success = true;
-    const response = await request({
-      method: 'POST',
-      json: true,
-      uri: `${sails.config.custom.notifications.url}${inputs.accion}`, // NOSONAR
-      form: inputs.data,
-      headers: inputs.headers
-    });
-    if (response.hasOwnProperty('error')) {
+    let success = false;
+    try {
+      success = request.post(
+        {
+          json: true,
+          url: `${sails.config.custom.email_provider.url}${inputs.accion}`, // NOSONAR
+          form: inputs.data,
+          headers: inputs.headers
+        },
+        function(error, response, body) {
+          if (body.success !== undefined && !body.success) {
+            return true;
+          }
+          return false;
+        }
+      );
+    } catch (error) {
+      console.error('Error send-email', error);
       success = false;
     }
     return exits.success(success);

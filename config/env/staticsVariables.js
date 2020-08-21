@@ -1,10 +1,9 @@
 staticsVariables = {
   app: 'API QREWARDS',
   version: '1.0.0',
-  openpay: {
-    id: 'mqfufzvnqrp2nyezxoub',
-    privateKey: 'sk_edfa5574382841118d0b7f7786b2862b',
-    production: false
+  recaptcha: {
+    url: 'https://www.google.com/recaptcha/api/siteverify',
+    secretKey: '6LfDGagUAAAAALtJjAYzJzUtJa49uB2bn3thINHB'
   },
   PAGE_DEFAULT_NUMBER: 1,
   LIMIT_DEFAULT_NUMBER: 15,

@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/app.js",
-      "runtimeExecutable": "/Users/jesusjavierangulomoran/.nvm/versions/node/v8.17.0/bin/node"
+      "runtimeExecutable": "/Users/alexanderangulo/.nvm/versions/node/v8.17.0/bin/node"
     },
     {
       "type": "node",
