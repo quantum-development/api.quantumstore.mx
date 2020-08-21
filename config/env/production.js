@@ -45,7 +45,7 @@ module.exports = {
       privateKey: 'sk_edfa5574382841118d0b7f7786b2862b',
       production: true
     },
-    app: {
+    app_info: {
       web: 'https://www.quantumstore.com.mx/'
     },
     email_provider: {

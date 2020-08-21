@@ -34,8 +34,7 @@ module.exports = {
     const token = jwt.sign(payload, sails.config.custom.jwtSecret, {
       expiresIn: '3d'
     });
-    const verification_url = `${sails.config.custom.app.web}verify-email`;
-    console.log(verification_url);
+    const verification_url = `${sails.config.custom.app_info.web}verify-email`;
     const send = await sails.helpers.sendEmail(
       'email',
       {
