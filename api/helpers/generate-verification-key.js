@@ -23,7 +23,7 @@ module.exports = {
 
   exits: {},
 
-  fn: async function (inputs, exits) {
+  fn: async function(inputs, exits) {
     // const passwordHash = farmhash.hash32(inputs.user.password);
     const payload = {
       user: inputs.user.id,
@@ -34,31 +34,29 @@ module.exports = {
     const token = jwt.sign(payload, sails.config.custom.jwtSecret, {
       expiresIn: '3d'
     });
-    const verification_url = `${sails.config.custom.app.web}verify-email?token=${token}`;
+    const verification_url = `${sails.config.custom.app.web}verify-email`;
     console.log(verification_url);
     const send = await sails.helpers.sendEmail(
       'email',
       {
-        "From": "QuantumStore",
-        "To": inputs.user.email,
-        "NameTo": inputs.user.name,
-        "Subject": "Bienvenido a QuantumStore",
+        From: 'QuantumStore',
+        To: inputs.user.email,
+        NameTo: inputs.user.name,
+        Subject: 'Bienvenido a QuantumStore',
         // "TextBody": "Hello dear Postmark user.",
-        "HtmlBodyTemplate": `verification_email`,
-        "Data": {
-          "VERIFICATIONLINK": verification_url,
-          "VERIFICATIONCODE": token,
-          "VERIFICATIONPAGE": `${sails.config.custom.app.web}verify-email`,
-          "USER_NAME": inputs.user.name,
-          "USER_LASTNAME": inputs.user.lastName,
-          "USER_EMAIL": inputs.user.email,
-          "USER_USERNAME": inputs.user.username,
+        HtmlBodyTemplate: `verification_email`,
+        Data: {
+          VERIFICATIONLINK: `${verification_url}?token=${token}`,
+          VERIFICATIONCODE: token,
+          VERIFICATIONPAGE: verification_url,
+          USER_NAME: inputs.user.name,
+          USER_LASTNAME: inputs.user.lastName,
+          USER_EMAIL: inputs.user.email,
+          USER_USERNAME: inputs.user.username
         }
         // "MessageStream": "outbound"
       },
-      {
-
-      }
+      {}
     );
 
     // All done.
