@@ -48,6 +48,10 @@ module.exports = {
     app_info: {
       web: 'https://www.quantumstore.com.mx/'
     },
+    reward_provider: {
+      client_slug: 'quantumstore',
+      url: 'https://api.qrewards.mx/'
+    },
     email_provider: {
       url: 'https://api.qrewards.mx/store/notifications/'
     },
