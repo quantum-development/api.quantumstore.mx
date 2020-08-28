@@ -39,6 +39,7 @@ module.exports = {
 
   fn: async function(inputs, exits) {
     const process = {
+      demo: inputs.demo,
       client: sails.config.custom.reward_provider.client_slug,
       site_webservice: 1,
       digital_id: inputs.digital_id,
@@ -48,17 +49,14 @@ module.exports = {
       rchrg_cellphone: '',
       rchrg_amount: '',
       rchrg_company: '',
-      name: inputs.data.name,
-      info: inputs.data.info,
-      email: inputs.data.name,
-      demo: inputs.demo
+      ...inputs.data
     };
     let success = false;
     try {
       success = request.post(
         {
           json: true,
-          url: `${sails.config.custom.reward_provider.url}/sites/auth/webservice`,
+          url: `${sails.config.custom.reward_provider.url}sites/auth/webservice`,
           form: process,
           headers: {}
         },
