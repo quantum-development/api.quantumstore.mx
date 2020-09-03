@@ -43,7 +43,7 @@ module.exports = {
     openpay: {
       id: 'mqfufzvnqrp2nyezxoub',
       privateKey: 'sk_edfa5574382841118d0b7f7786b2862b',
-      production: false
+      production: true
     },
     app_info: {
       web: 'https://www.quantumstore.com.mx/'
@@ -51,7 +51,7 @@ module.exports = {
     reward_provider: {
       client_slug: 'quantumstore',
       url: 'https://api.qrewards.mx/',
-      demo: 1
+      demo: 0
     },
     email_provider: {
       url: 'https://api.qrewards.mx/store/notifications/'
