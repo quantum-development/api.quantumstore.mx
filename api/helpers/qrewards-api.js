@@ -21,15 +21,11 @@ module.exports = {
       type: 'number',
       required: true
     },
-    promo_id: {
-      type: 'number',
-      required: true
-    },
     data: {
       type: 'json',
-      required: true
+      required: false
     },
-    demo: {
+    promo_id: {
       type: 'number',
       required: false
     }
@@ -39,7 +35,7 @@ module.exports = {
 
   fn: async function(inputs, exits) {
     const process = {
-      demo: inputs.demo,
+      demo: sails.config.custom.reward_provider.demo,
       client: sails.config.custom.reward_provider.client_slug,
       site_webservice: 1,
       digital_id: inputs.digital_id,
@@ -53,8 +49,9 @@ module.exports = {
     };
     let success = false;
     try {
-      success = request.post(
+      success = request(
         {
+          method: 'POST',
           json: true,
           url: `${sails.config.custom.reward_provider.url}sites/auth/webservice`,
           form: process,
@@ -62,13 +59,13 @@ module.exports = {
         },
         function(error, response, body) {
           if (body.data !== undefined && !body.data) {
-            return body.user;
+            return body.data.user;
           }
           return false;
         }
       );
     } catch (error) {
-      console.error('Error send-email', error);
+      console.error('Error API QREWARDS', error);
       success = false;
     }
     return exits.success(success);

@@ -50,7 +50,8 @@ module.exports = {
     },
     reward_provider: {
       client_slug: 'quantumstore',
-      url: 'https://api.qrewards.mx/'
+      url: 'https://api.qrewards.mx/',
+      demo: 1
     },
     email_provider: {
       url: 'https://api.qrewards.mx/store/notifications/'

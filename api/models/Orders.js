@@ -29,6 +29,10 @@ module.exports = {
       isIn: ['cancel', 'waiting_for_payment', 'payed', 'delivered'],
       defaultsTo: 'waiting_for_payment'
     },
+    openpay: {
+      type: 'string',
+      required: false
+    },
     deleted: {
       type: 'boolean',
       defaultsTo: false

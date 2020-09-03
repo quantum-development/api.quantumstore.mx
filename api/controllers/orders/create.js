@@ -52,6 +52,17 @@ module.exports = async (req, res) => {
       }
     );
   }
+
+  // Must check a verified email account
+  if (!req.userInfo.emailVerificated) {
+    return res.badRequest(
+      {},
+      {
+        message: `A verified email is required`
+      }
+    );
+  }
+
   const data = validateJSON(shopingData.data);
   shopingData = {
     ...shopingData,
@@ -135,14 +146,20 @@ module.exports = async (req, res) => {
 
     order.message = 'No se realizo el cargo correctamente';
     order.success = false;
+
     if (charge) {
       order.message = 'El pago se realizo correctamente';
       order.success = true;
+      order.status = 'payed';
+
       await Orders.update({
         // NOSONAR
         id: order.id
       })
-        .set({ status: 'payed' })
+        .set({
+          status: 'payed',
+          openpay: JSON.stringify(charge)
+        })
         .intercept(_err => {
           return res.badRequest(
             {},
@@ -152,6 +169,33 @@ module.exports = async (req, res) => {
           );
         })
         .fetch();
+
+      // send email with rewards
+      for (const item of shopingData.data.items) {
+        const userApi = await sails.helpers.qrewardsApi(
+          item.digital_id, // digital_id,
+          item.amount, // digital_limit,
+          {
+            name: [req.userInfo.name, req.userInfo.lastName].join(' '),
+            email: req.userInfo.email,
+            info: {
+              userId: req.userInfo.id,
+              orderId: order.id,
+              orderUrl: sails.config.custom.app_info.web + 'order/' + order.id,
+              itemName: item.name,
+              itemAmount: item.amount,
+              priceLabel: item.priceLabel,
+              purchaseOptions: item.purchaseOptions,
+              imgThumbnail:
+                sails.config.custom.app_info.web +
+                'projects/qrewards' +
+                item.imgThumbnail,
+              userUsername: req.userInfo.username,
+              phone: req.userInfo.phone
+            }
+          } // data, promo_id
+        );
+      }
     }
   }
 
@@ -159,7 +203,7 @@ module.exports = async (req, res) => {
     // NOSONAR
     id: shopingData.id
   })
-    .set({ finished: true })
+    .set({ finished: order.success })
     .intercept(_err => {
       return res.badRequest(
         {},

@@ -24,6 +24,11 @@ module.exports = {
       required: false,
       allowNull: true
     },
+    digital_id: {
+      type: 'number',
+      defaultsTo: 0,
+      allowNull: false
+    },
     purchaseoptions: {
       collection: 'PricesPurchaseOptions',
       via: 'idPrice'

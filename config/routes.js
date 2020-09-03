@@ -89,6 +89,9 @@ module.exports.routes = {
   'POST /orders/create': {
     action: 'orders/create'
   },
+  'GET /users/orders/find': {
+    action: 'orders/find'
+  },
   // Notifications CODES
   'POST /notifications/contact': {
     action: 'notifications/contact'

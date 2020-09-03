@@ -62,7 +62,9 @@ module.exports = async (req, res) => {
   item.images = images.map(image => image.idImage);
   item.images = item.images.filter(image => image.deleted === false);
 
-  const imageItem = item.images.length ? item.images.map(image => image.src) : [];
+  const imageItem = item.images.length
+    ? item.images.map(image => image.src)
+    : [];
   const purchaseOption = params.purchase_option || null;
 
   let priceData = await item.prices.find(price => price.price === params.price);
@@ -81,7 +83,12 @@ module.exports = async (req, res) => {
     const dataCart = shopingData.data;
     let dataCartJson = validateJSON(dataCart);
     let items = dataCartJson.items;
-    let itemIndex = items.findIndex(item => item.id === req.item.id && item.price === price && item.purchaseOptions === purchaseOption);
+    let itemIndex = items.findIndex(
+      item =>
+        item.id === req.item.id &&
+        item.price === price &&
+        item.purchaseOptions === purchaseOption
+    );
     if (item) {
       if (itemIndex > -1) {
         let itemData = items[itemIndex];
@@ -106,6 +113,7 @@ module.exports = async (req, res) => {
           total,
           name: item.name,
           priceLabel: priceData.label,
+          digital_id: priceData.digital_id,
           purchaseOptions: purchaseOption,
           image: imageItem,
           imgThumbnail: item.imgThumbnail
@@ -140,6 +148,7 @@ module.exports = async (req, res) => {
       total,
       name: item.name,
       priceLabel: priceData.label,
+      digital_id: priceData.digital_id,
       purchaseOptions: purchaseOption,
       image: imageItem,
       imgThumbnail: item.imgThumbnail
