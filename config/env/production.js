@@ -43,7 +43,7 @@ module.exports = {
     openpay: {
       id: 'mqfufzvnqrp2nyezxoub',
       privateKey: 'sk_edfa5574382841118d0b7f7786b2862b',
-      production: true
+      production: false
     },
     app_info: {
       web: 'https://www.quantumstore.com.mx/'
