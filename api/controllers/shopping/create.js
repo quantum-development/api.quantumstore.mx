@@ -78,6 +78,7 @@ module.exports = async (req, res) => {
   }
   priceData = priceData || {};
   price = priceData.price || 0;
+  priceData.promo_id = priceData.promo_id || 0;
 
   if (shopingData) {
     const dataCart = shopingData.data;
