@@ -203,7 +203,7 @@ module.exports = async (req, res) => {
     // NOSONAR
     id: shopingData.id
   })
-    .set({ finished: order.success })
+    .set({ finished: true })
     .intercept(_err => {
       return res.badRequest(
         {},
