@@ -114,6 +114,7 @@ module.exports = async (req, res) => {
           name: item.name,
           priceLabel: priceData.label,
           digital_id: priceData.digital_id,
+          promo_id: priceData.promo_id,
           purchaseOptions: purchaseOption,
           image: imageItem,
           imgThumbnail: item.imgThumbnail
@@ -149,6 +150,7 @@ module.exports = async (req, res) => {
       name: item.name,
       priceLabel: priceData.label,
       digital_id: priceData.digital_id,
+      promo_id: priceData.promo_id,
       purchaseOptions: purchaseOption,
       image: imageItem,
       imgThumbnail: item.imgThumbnail

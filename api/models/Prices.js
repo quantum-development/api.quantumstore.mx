@@ -29,6 +29,11 @@ module.exports = {
       defaultsTo: 0,
       allowNull: false
     },
+    promo_id: {
+      type: 'number',
+      defaultsTo: 0,
+      allowNull: false
+    },
     purchaseoptions: {
       collection: 'PricesPurchaseOptions',
       via: 'idPrice'

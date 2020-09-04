@@ -193,7 +193,8 @@ module.exports = async (req, res) => {
               userUsername: req.userInfo.username,
               phone: req.userInfo.phone
             }
-          } // data, promo_id
+          }, // data
+          item.promo_id // promo_id
         );
       }
     }
