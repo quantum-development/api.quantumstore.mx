@@ -78,7 +78,7 @@ module.exports = async (req, res) => {
   }
   priceData = priceData || {};
   price = priceData.price || 0;
-  priceData.promo_id = priceData.promo_id || 0;
+  promo_id = priceData.promo_id || 0;
 
   if (shopingData) {
     const dataCart = shopingData.data;
@@ -115,7 +115,7 @@ module.exports = async (req, res) => {
           name: item.name,
           priceLabel: priceData.label,
           digital_id: priceData.digital_id,
-          promo_id: priceData.promo_id,
+          promo_id: promo_id,
           purchaseOptions: purchaseOption,
           image: imageItem,
           imgThumbnail: item.imgThumbnail
@@ -151,7 +151,7 @@ module.exports = async (req, res) => {
       name: item.name,
       priceLabel: priceData.label,
       digital_id: priceData.digital_id,
-      promo_id: priceData.promo_id,
+      promo_id: promo_id,
       purchaseOptions: purchaseOption,
       image: imageItem,
       imgThumbnail: item.imgThumbnail

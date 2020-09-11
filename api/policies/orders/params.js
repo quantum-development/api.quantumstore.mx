@@ -15,37 +15,37 @@ module.exports = async (req, res, next) => {
    * rfc should be string
    * rfc should be length only 13 chars
    */
-  if (!req.body.rfc || !_.isString(req.body.rfc)) {
-    return res.badRequest(
-      {},
-      {
-        message: 'The rfc is required or corrupted'
-      }
-    );
-  }
+  // if (!req.body.rfc || !_.isString(req.body.rfc)) {
+  //   return res.badRequest(
+  //     {},
+  //     {
+  //       message: 'The rfc is required or corrupted'
+  //     }
+  //   );
+  // }
 
   //validate the length of the string
-  if (!_.inRange(req.body.rfc.length, 10, 14)) {
-    return res.badRequest(
-      {},
-      {
-        message: 'The rfc should be between 10 and 13 chars'
-      }
-    );
-  }
+  // if (!_.inRange(req.body.rfc.length, 10, 14)) {
+  //   return res.badRequest(
+  //     {},
+  //     {
+  //       message: 'The rfc should be between 10 and 13 chars'
+  //     }
+  //   );
+  // }
   /**
    * validate social
    * social should be required
    * social should be string
    */
-  if (!req.body.social || !_.isString(req.body.social)) {
-    return res.badRequest(
-      {},
-      {
-        message: 'The social is required or corrupted'
-      }
-    );
-  }
+  // if (!req.body.social || !_.isString(req.body.social)) {
+  //   return res.badRequest(
+  //     {},
+  //     {
+  //       message: 'The social is required or corrupted'
+  //     }
+  //   );
+  // }
 
   /**
    * validate cardId

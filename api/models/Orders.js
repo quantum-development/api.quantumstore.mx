@@ -18,11 +18,11 @@ module.exports = {
     },
     social: {
       type: 'string',
-      required: true
+      required: false
     },
     rfc: {
       type: 'string',
-      required: true
+      required: false
     },
     status: {
       type: 'string',
