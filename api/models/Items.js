@@ -27,6 +27,10 @@ module.exports = {
       type: 'string',
       allowNull: true
     },
+    sort: {
+      type: 'number',
+      defaultsTo: 0
+    },
     deleted: {
       type: 'boolean',
       defaultsTo: false

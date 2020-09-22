@@ -13,6 +13,7 @@ module.exports = {
     const page = req.body.page > 0 ? req.body.page - 1 : 0;
     const limit = req.body.limit;
     let items = await Items.find(where)
+      .sort('sort DESC')
       .paginate(page, limit)
       .populate('prices')
       .intercept(_err => {
@@ -121,15 +122,14 @@ module.exports = {
     for (const price of item.prices) {
       const purchase_options = await PricesPurchaseOptions.find({
         idPrice: price.id
-      })
-        .intercept(_err => {
-          return res.badRequest(
-            {},
-            {
-              message: `There an error on DB`
-            }
-          );
-        });
+      }).intercept(_err => {
+        return res.badRequest(
+          {},
+          {
+            message: `There an error on DB`
+          }
+        );
+      });
       if (purchase_options) {
         price.purchase_options = purchase_options;
       } else {
