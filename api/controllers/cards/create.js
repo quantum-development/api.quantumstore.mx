@@ -14,6 +14,7 @@ module.exports = async (req, res) => {
     // expiration_year: params.expiredYear,
     // expiration_month: params.expiredMonth,
     // cvv2: params.cvv,
+    token_id: params.token_id,
     device_session_id: params.deviceSesionId,
     customerId: req.customer.customerId
   };
