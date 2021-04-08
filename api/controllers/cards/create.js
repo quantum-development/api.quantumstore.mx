@@ -9,11 +9,11 @@ module.exports = async (req, res) => {
   const params = req.allParams();
 
   const cardData = {
-    holder_name: params.holderName,
-    card_number: params.cardNumber,
-    expiration_year: params.expiredYear,
-    expiration_month: params.expiredMonth,
-    cvv2: params.cvv,
+    // holder_name: params.holderName,
+    // card_number: params.cardNumber,
+    // expiration_year: params.expiredYear,
+    // expiration_month: params.expiredMonth,
+    // cvv2: params.cvv,
     device_session_id: params.deviceSesionId,
     customerId: req.customer.customerId
   };
