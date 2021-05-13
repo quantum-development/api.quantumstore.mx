@@ -53,6 +53,11 @@ module.exports = {
       url: 'http://api-local.qrewards.mx/',
       demo: 1
     },
+    ike_provider: {
+      authUrl: 'http://52.13.68.191:9090/oauth/token',
+      url: 'http://ikewrapperdev.ikeasistencia.com:9079/Ike-Api/Mx/M/1/Load/Single/',
+      authBearer: 'Basic SUtFX1FVQU5UVU06OXhuNGRVaWwoeW1zcjRqcg=='
+    },
     email_provider: {
       url: 'http://api-local.qrewards.mx/store/notifications/'
     },

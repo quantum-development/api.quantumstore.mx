@@ -1,3 +1,4 @@
+const fetch = require("node-fetch");
 /**
  * qrewardsApi
  *
@@ -34,10 +35,11 @@ module.exports = {
   exits: {},
 
   fn: async function(inputs, exits) {
+    const client = sails.config.custom.reward_provider.client_slug;
     const process = {
       demo: sails.config.custom.reward_provider.demo,
-      client: sails.config.custom.reward_provider.client_slug,
-      site_webservice: 1,
+      client,
+      site_webservice: "1",
       digital_id: inputs.digital_id,
       digital_limit: inputs.digital_limit,
       wb_limit: inputs.digital_limit,
@@ -47,27 +49,54 @@ module.exports = {
       rchrg_company: '',
       ...inputs.data
     };
-    let success = false;
-    try {
-      success = request(
-        {
-          method: 'POST',
-          json: true,
-          url: `${sails.config.custom.reward_provider.url}sites/auth/webservice`,
-          form: process,
-          headers: {}
-        },
-        function(error, response, body) {
-          if (body.data !== undefined && !body.data) {
-            return body.data.user;
-          }
-          return false;
-        }
-      );
-    } catch (error) {
-      console.error('Error API QREWARDS', error);
-      success = false;
-    }
-    return exits.success(success);
+
+   const userData = await fetch(`${sails.config.custom.reward_provider.url}sites/auth/webservice`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(process)
+    }).then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        // throw res.error.description;
+        throw "Error API logging";
+      }
+    })
+    .catch(function(error) {
+      throw 'error to api response';
+      
+    });
+
+    const rewards = await fetch(`${sails.config.custom.reward_provider.url}sites/download/webservice?client=${client}`, {
+      method: "GET",
+      headers: {
+        'X-API-KEY': userData.token
+      }
+    })
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(res);
+      if (res.data) {
+        return res.data;
+      } else {
+        throw "Error API getting reward";
+      }
+    })
+    .catch(function(error) {
+      console.error(error);
+      throw error.data.error.description;
+      // throw 'error to api response';
+    });
+
+    console.log('REWARDS_API', userData, rewards);
+
+    return exits.success({
+      user: userData,
+      rewards
+    });
   }
 };

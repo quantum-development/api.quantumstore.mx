@@ -196,6 +196,18 @@ module.exports = async (req, res) => {
           }, // data
           item.promo_id // promo_id
         );
+        
+        if (true) { // Has ike coupon
+          const ikeApi = await sails.helpers.ikeApi({
+            "Movimiento_IKE":"2", 
+            "Cuenta_IKE":"2555", 
+            "Nombre":"Teresa Abigail", 
+            "Fecha Inicio":"2021-04-08",
+            "Fecha Fin":"2021-08-09",
+            "No de Folio":"167283928492", 
+            "Programa":"Qhealt nutricional"
+          });
+        }
       }
     }
   }
