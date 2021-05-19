@@ -19,7 +19,8 @@ module.exports = async (req, res) => {
   let findData = {
     idUser: params.idUser,
     fingerprint: params.fingerPrint,
-    deleted: false
+    deleted: false,
+    finished: false
   };
 
   findData.idUser = findData.idUser === 0 ? null : findData.idUser;
