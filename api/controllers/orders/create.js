@@ -1,10 +1,10 @@
 const validateJSON = value => {
-  try {
-    return JSON.parse(value);
-  } catch (e) {
-    e = false;
-    return e;
-  }
+    try {
+        return JSON.parse(value);
+    } catch (e) {
+        e = false;
+        return e;
+    }
 };
 
 /**
@@ -14,218 +14,208 @@ const validateJSON = value => {
  * @param {*} res
  */
 
-module.exports = async (req, res) => {
-  const params = req.allParams();
+module.exports = async(req, res) => {
+    const params = req.allParams();
 
-  const orderData = {
-    rfc: params.rfc,
-    social: params.social,
-    deviceSesionId: params.deviceSesionId,
-    cardId: params.cardId,
-    idUser: req.userInfo.id,
-    fingerprint: params.fingerprint
-  };
-
-  let findData = {
-    idUser: orderData.idUser,
-    fingerprint: orderData.fingerprint,
-    deleted: false,
-    finished: false
-  };
-
-  findData.idUser = findData.idUser === 0 ? null : findData.idUser;
-
-  //Get Shipping Cart
-  let shopingData = await ShoppingCart.findOne(findData).intercept(_err => {
-    return res.badRequest(
-      {},
-      {
-        message: `There an error on DB`
-      }
-    );
-  });
-  if (!shopingData) {
-    return res.notFound(
-      {},
-      {
-        message: `The shopping cart doesn't exists`
-      }
-    );
-  }
-
-  // Must check a verified email account
-  if (!req.userInfo.emailVerificated) {
-    return res.badRequest(
-      {},
-      {
-        message: `A verified email is required`
-      }
-    );
-  }
-
-  const data = validateJSON(shopingData.data);
-  shopingData = {
-    ...shopingData,
-    data
-  };
-
-  // Create Order
-  const orderCreate = {
-    subtotal: shopingData.total,
-    total: shopingData.total,
-    idUser: orderData.idUser,
-    social: orderData.social,
-    rfc: orderData.rfc,
-    idShoppingCart: shopingData.id
-  };
-
-  let order = await Orders.create(orderCreate)
-    .intercept(_err => {
-      return res.badRequest(
-        {},
-        {
-          message: `There an error on DB`
-        }
-      );
-    })
-    .fetch();
-
-  if (!order) {
-    return res.notFound(
-      {},
-      {
-        message: `The order can't created`
-      }
-    );
-  }
-
-  for (const item of shopingData.data.items) {
-    await OrdersItems.create({
-      idOrder: order.id,
-      idItem: item.id,
-      amount: item.amount,
-      price: item.price
-    }).intercept(_err => {
-      return res.badRequest(
-        {},
-        {
-          message: `There an error on DB`
-        }
-      );
-    });
-  }
-
-  //Get Card
-  const cardData = await Cards.findOne({
-    id: orderData.cardId,
-    deleted: false
-  }).intercept(_err => {
-    return res.badRequest(
-      {},
-      {
-        message: `There an error on DB`
-      }
-    );
-  });
-
-  if (cardData) {
-    const chargeData = {
-      source_id: cardData.cardId,
-      method: 'card',
-      amount: shopingData.total,
-      currency: 'MXN',
-      description: `Cargo referente a orden ${order.id}`,
-      order_id: `${order.id}`,
-      device_session_id: orderData.deviceSesionId
+    const orderData = {
+        rfc: params.rfc,
+        social: params.social,
+        deviceSesionId: params.deviceSesionId,
+        cardId: params.cardId,
+        idUser: req.userInfo.id,
+        fingerprint: params.fingerprint
     };
-    const charge = await sails.helpers.openpayCharges(
-      req.customer.customerId,
-      chargeData,
-      'charge'
-    );
 
-    order.message = 'No se realizo el cargo correctamente';
-    order.success = false;
+    let findData = {
+        idUser: orderData.idUser,
+        fingerprint: orderData.fingerprint,
+        deleted: false,
+        finished: false
+    };
 
-    if (charge) {
-      order.message = 'El pago se realizo correctamente';
-      order.success = true;
-      order.status = 'payed';
+    findData.idUser = findData.idUser === 0 ? null : findData.idUser;
 
-      await Orders.update({
-        // NOSONAR
-        id: order.id
-      })
-        .set({
-          status: 'payed',
-          openpay: JSON.stringify(charge)
-        })
+    //Get Shipping Cart
+    let shopingData = await ShoppingCart.findOne(findData).intercept(_err => {
+        return res.badRequest({}, {
+            message: `There an error on DB`
+        });
+    });
+    if (!shopingData) {
+        return res.notFound({}, {
+            message: `The shopping cart doesn't exists`
+        });
+    }
+
+    // Must check a verified email account
+    if (!req.userInfo.emailVerificated) {
+        return res.badRequest({}, {
+            message: `A verified email is required`
+        });
+    }
+
+    const data = validateJSON(shopingData.data);
+    shopingData = {
+        ...shopingData,
+        data
+    };
+
+    // Create Order
+    const orderCreate = {
+        subtotal: shopingData.total,
+        total: shopingData.total,
+        idUser: orderData.idUser,
+        social: orderData.social,
+        rfc: orderData.rfc,
+        idShoppingCart: shopingData.id
+    };
+
+    let order = await Orders.create(orderCreate)
         .intercept(_err => {
-          return res.badRequest(
-            {},
-            {
-              message: `There an error on DB`
-            }
-          );
+            return res.badRequest({}, {
+                message: `There an error on DB`
+            });
         })
         .fetch();
 
-      // send email with rewards
-      for (const item of shopingData.data.items) {
-        const userApi = await sails.helpers.qrewardsApi(
-          item.digital_id, // digital_id,
-          item.amount, // digital_limit,
-          {
-            name: [req.userInfo.name, req.userInfo.lastName].join(' '),
-            email: req.userInfo.email,
-            info: {
-              userId: req.userInfo.id,
-              orderId: order.id,
-              orderUrl: sails.config.custom.app_info.web + 'order/' + order.id,
-              itemName: item.name,
-              itemAmount: item.amount,
-              priceLabel: item.priceLabel,
-              purchaseOptions: item.purchaseOptions,
-              imgThumbnail:
-                sails.config.custom.app_info.web +
-                'projects/qrewards' +
-                item.imgThumbnail,
-              userUsername: req.userInfo.username,
-              phone: req.userInfo.phone
-            }
-          }, // data
-          item.promo_id // promo_id
-        );
-        
-        if (true) { // Has ike coupon
-          const ikeApi = await sails.helpers.ikeApi({
-            "Movimiento_IKE":"2", 
-            "Cuenta_IKE":"2555", 
-            "Nombre":"Teresa Abigail", 
-            "Fecha Inicio":"2021-04-08",
-            "Fecha Fin":"2021-08-09",
-            "No de Folio":"167283928492", 
-            "Programa":"Qhealt nutricional"
-          });
-        }
-      }
+    if (!order) {
+        return res.notFound({}, {
+            message: `The order can't created`
+        });
     }
-  }
 
-  await ShoppingCart.update({
-    // NOSONAR
-    id: shopingData.id
-  })
-    .set({ finished: true })
-    .intercept(_err => {
-      return res.badRequest(
-        {},
-        {
-          message: `There an error on DB`
+    for (const item of shopingData.data.items) {
+        await OrdersItems.create({
+            idOrder: order.id,
+            idItem: item.id,
+            amount: item.amount,
+            price: item.price
+        }).intercept(_err => {
+            return res.badRequest({}, {
+                message: `There an error on DB`
+            });
+        });
+    }
+
+    //Get Card
+    const cardData = await Cards.findOne({
+        id: orderData.cardId,
+        deleted: false
+    }).intercept(_err => {
+        return res.badRequest({}, {
+            message: `There an error on DB`
+        });
+    });
+
+    if (cardData) {
+        const chargeData = {
+            source_id: cardData.cardId,
+            method: 'card',
+            amount: shopingData.total,
+            currency: 'MXN',
+            description: `Cargo referente a orden ${order.id}`,
+            order_id: `${order.id}`,
+            device_session_id: orderData.deviceSesionId
+        };
+        const charge = await sails.helpers.openpayCharges(
+            req.customer.customerId,
+            chargeData,
+            'charge'
+        );
+
+        order.message = 'No se realizo el cargo correctamente';
+        order.success = false;
+
+        if (charge) {
+            order.message = 'El pago se realizo correctamente';
+            order.success = true;
+            order.status = 'payed';
+
+            await Orders.update({
+                    // NOSONAR
+                    id: order.id
+                })
+                .set({
+                    status: 'payed',
+                    openpay: JSON.stringify(charge)
+                })
+                .intercept(_err => {
+                    return res.badRequest({}, {
+                        message: `There an error on DB`
+                    });
+                })
+                .fetch();
+
+            // send email with rewards
+            for (const item of shopingData.data.items) {
+                const userApi = await sails.helpers.qrewardsApi(
+                    item.digital_id, // digital_id,
+                    item.amount, // digital_limit,
+                    {
+                        name: [req.userInfo.name, req.userInfo.lastName].join(' '),
+                        email: req.userInfo.email,
+                        info: {
+                            userId: req.userInfo.id,
+                            orderId: order.id,
+                            orderUrl: sails.config.custom.app_info.web + 'order/' + order.id,
+                            itemName: item.name,
+                            itemAmount: item.amount,
+                            priceLabel: item.priceLabel,
+                            purchaseOptions: item.purchaseOptions,
+                            imgThumbnail: sails.config.custom.app_info.web +
+                                'projects/qrewards' +
+                                item.imgThumbnail,
+                            userUsername: req.userInfo.username,
+                            phone: req.userInfo.phone
+                        }
+                    }, // data
+                    item.promo_id // promo_id
+                );
+
+                if (userApi) { // Has ike coupon
+                    const digital = userApi.rewards[0].digital.name;
+                    const rewards = userApi.rewards[0];
+
+                    if (digital.indexOf('IKE') >= 0) {
+                        for (const stock of rewards.stock) {
+                            let data = {
+                                code: stock.exit_code.code,
+                                start_date: rewards.promo.starts,
+                                end_date: rewards.promo.ends,
+                                user: rewards.record.name,
+                                program: rewards.digital.description.program ? rewards.digital.description.program : '',
+                                account_ike: rewards.digital.description.account ? rewards.digital.description.account : '',
+                            }
+
+                            // console.log('DATA IKE: ', data);
+                            const ikeApi = await sails.helpers.ikeApi({
+                                "Movimiento_IKE": "2",
+                                "Cuenta_IKE": data.account_ike,
+                                "Nombre": data.user,
+                                "Fecha Inicio": data.start_date,
+                                "Fecha Fin": data.end_date,
+                                "No de Folio": data.code,
+                                "Programa": data.program
+                            });
+                        }
+
+                    }
+                }
+            }
         }
-      );
-    })
-    .fetch();
+    }
 
-  return res.ok(order);
+    await ShoppingCart.update({
+            // NOSONAR
+            id: shopingData.id
+        })
+        .set({ finished: true })
+        .intercept(_err => {
+            return res.badRequest({}, {
+                message: `There an error on DB`
+            });
+        })
+        .fetch();
+
+    return res.ok(order);
 };
