@@ -26,7 +26,7 @@ module.exports = {
     }
   },
   exits: {},
-  fn: async function(inputs, exits) {
+  fn: async function (inputs, exits) {
     let res = false;
     const cardData = inputs.cardData;
     switch (inputs.cardAction) {
@@ -37,8 +37,15 @@ module.exports = {
         res = await find(cardData.customerId);
         break;
       default:
+        // console.log("controllers/helpers/openpay-cards.js", "exits", exits);
         const card = _.omit(cardData, ['customerId']);
-        res = await create(cardData.customerId, card);
+        try {
+          res = await create(cardData.customerId, card);
+          // console.log("controllers/helpers/openpay-cards.js", "create", res);
+        } catch (e) {
+          // console.log("controllers/helpers/openpay-cards.js", "try catch e", e);
+          return exits.error(e);
+        }
         break;
     }
     return exits.success(res);

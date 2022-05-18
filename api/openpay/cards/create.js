@@ -1,11 +1,12 @@
 const getOpenpay = require('../index');
 
 module.exports = (customerId, card) => {
-  return new Promise((resolve, _reject) => {
+  return new Promise((resolve, reject) => {
     const openpay = getOpenpay();
     openpay.customers.cards.create(customerId, card, (error, card) => {
       if (error) {
-        resolve(false);
+        // console.log("controllers/openpay/cards/create.js", "error", error);
+        reject(error.description);
       }
       resolve(card);
     });

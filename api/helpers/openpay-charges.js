@@ -28,14 +28,18 @@ module.exports = {
     }
   },
   exits: {},
-  fn: async function(inputs, exits) {
+  fn: async function (inputs, exits) {
     let res = false;
     switch (inputs.chargeAction) {
       case 'charge':
-        res = await create(inputs.customerId, inputs.chargeData);
-        break;
       default:
-        res = await create(inputs.customerId, inputs.chargeData);
+        try {
+          res = await create(inputs.customerId, inputs.chargeData);
+          // console.log("controllers/helpers/openpay-charges.js", "create", res);
+        } catch (e) {
+          // console.log("controllers/helpers/openpay-charges.js", "try catch e", e);
+          return exits.error(e);
+        }
         break;
     }
     return exits.success(res);
