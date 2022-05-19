@@ -44,6 +44,26 @@ module.exports = {
       required: true,
       maxLength: 100
     },
+    street: {
+      type: 'string',
+      required: true,
+      maxLength: 200
+    },
+    district: {
+      type: 'string',
+      required: true,
+      maxLength: 200
+    },
+    city: {
+      type: 'string',
+      required: true,
+      maxLength: 100
+    },
+    codpost: {
+      type: 'string',
+      required: true,
+      maxLength: 10
+    },
     phone: {
       type: 'string',
       allowNull: true

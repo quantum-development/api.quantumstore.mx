@@ -99,6 +99,10 @@ module.exports.routes = {
   'POST /notifications/subscription': {
     action: 'notifications/subscription'
   },
+  // other services
+  'POST /services/checkcode': {
+    action: 'services/code'
+  },
   // Permissions INIT
   'POST /users/permissions/init': 'PermissionsController.init',
   'GET /users/': 'PingController.index',

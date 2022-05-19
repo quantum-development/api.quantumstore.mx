@@ -96,5 +96,9 @@ module.exports.policies = {
     '*': false,
     create: ['hasToken', 'orders/params', 'hasDeviceId', 'customer'],
     find: ['hasToken']
-  }
+  },
+  ServicesController: {
+    '*': false,
+    code: ['hasToken']
+  },
 };

@@ -31,7 +31,11 @@ module.exports = async (req, res) => {
     birthdate: params.birthdate,
     gender: params.gender,
     email: params.email,
-    phone: params.phone || null
+    phone: params.phone || null,
+    street: params.street,
+    district: params.district,
+    city: params.city,
+    codpost: params.codpost,
   })
     .intercept(err => {
       return res.negotiate(err);
