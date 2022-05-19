@@ -7,7 +7,7 @@
 
 module.exports = async (req, res) => {
   const params = req.allParams();
-  const page = params.page || 1;
+  const page = params.page || 0;
   const ITEMS_PER_PAGE = 20;
 
   try {

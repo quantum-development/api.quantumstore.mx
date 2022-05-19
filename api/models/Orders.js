@@ -8,7 +8,7 @@ module.exports = {
   attributes: {
     uniqId: {
       type: 'string',
-      required: false
+      allowNull: true,
     },
     subtotal: {
       type: 'number',
