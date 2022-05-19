@@ -91,6 +91,7 @@ module.exports = async (req, res) => {
             const orderItem = await OrdersItems.create({
                 idOrder: createOrder.id,
                 idItem: id,
+                purchaseOption: purchaseOptions,
                 amount,
                 price
             }).fetch();
@@ -131,6 +132,7 @@ module.exports = async (req, res) => {
                 purchaseOptions,
                 imgThumbnail,
                 promo_id,
+                id: idOrderItems
             } = await item;
             const userApi = await sails.helpers.qrewardsApi(
                 digital_id, // digital_id,
@@ -150,7 +152,7 @@ module.exports = async (req, res) => {
                             'projects/qrewards' +
                             imgThumbnail,
                         userUsername: req.userInfo.username,
-                        phone: req.userInfo.phone,
+                        phoneNumber: req.userInfo.phone,
                         firstname: req.userInfo.name,
                         lastname: req.userInfo.lastName,
                         email: req.userInfo.email,
@@ -163,9 +165,9 @@ module.exports = async (req, res) => {
                 promo_id // promo_id
             );
 
-            await OrdersItems.update({
+            await OrdersItems.updateOne({
                 // NOSONAR
-                id: item.id
+                id: idOrderItems
             }).set({
                 qrewards: JSON.stringify(userApi)
             });

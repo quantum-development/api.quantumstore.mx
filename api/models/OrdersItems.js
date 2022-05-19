@@ -14,6 +14,10 @@ module.exports = {
       model: 'Items',
       required: true
     },
+    purchaseOption: {
+      type: 'string',
+      required: false
+    },
     amount: {
       type: 'number',
       defaultsTo: 0,
