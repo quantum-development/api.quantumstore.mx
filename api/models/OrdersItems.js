@@ -23,6 +23,10 @@ module.exports = {
       type: 'number',
       defaultsTo: 0,
       allowNull: false
+    },
+    qrewards: {
+      type: 'string',
+      required: false
     }
   }
 };
