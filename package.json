@@ -64,6 +64,6 @@
   "author": "qrewards",
   "license": "",
   "engines": {
-    "node": ">=8.9.0"
+    "node": "8.17.0"
   }
 }
