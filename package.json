@@ -6,12 +6,12 @@
   "keywords": [],
   "dependencies": {
     "@sailshq/lodash": "^3.10.3",
-    "async": "2.0.1",
+    "async": "^3.2.3",
     "base64-url": "^2.2.0",
     "bcryptjs": "^2.4.3",
     "credit-card-validation": "^1.0.0",
     "farmhash": "^2.1.0",
-    "google-auth-library": "^2.0.0",
+    "google-auth-library": "^8.0.2",
     "jsonwebtoken": "^8.2.1",
     "moment": "^2.29.3",
     "node-fetch": "^2.6.7",
@@ -21,9 +21,9 @@
     "phone": "^2.1.0",
     "request": "^2.85.0",
     "sails": "^1.0.1",
-    "sails-hook-orm": "^2.0.0-16",
+    "sails-hook-orm": "^4.0.1",
     "sails-hook-req-validate": "^1.0.2",
-    "sails-hook-sockets": "^1.4.0",
+    "sails-hook-sockets": "^2.0.1",
     "sails-mysql": "^1.0.0",
     "uuid": "^3.2.1"
   },
@@ -33,15 +33,15 @@
     "chai-http": "^4.0.0",
     "chai-string": "^1.5.0",
     "coveralls": "^3.0.0",
-    "mocha": "^5.0.0",
+    "husky": "^0.14.3",
+    "mocha": "^10.0.0",
     "mock-require": "^3.0.0",
-    "nyc": "^11.4.0",
+    "nyc": "^15.1.0",
+    "precise-commits": "^1.0.2",
+    "prettier": "^1.14.2",
     "sinon": "^4.1.3",
     "sinon-chai": "^3.0.0",
-    "sonar-scanner": "^3.1.0",
-    "husky": "^0.14.3",
-    "precise-commits": "^1.0.2",
-    "prettier": "^1.14.2"
+    "sonar-scanner": "^3.1.0"
   },
   "nyc": {
     "exclude": [
