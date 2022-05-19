@@ -10,7 +10,7 @@ module.exports = {
     },
     models: {
         migrate: 'safe'
-            // cascadeOnDestroy: false,
+        // cascadeOnDestroy: false,
     },
 
     blueprints: {
@@ -31,7 +31,7 @@ module.exports = {
         }
     },
     sockets: {
-        onlyAllowOrigins: ['https://www.quantumstore.com.mx']
+        onlyAllowOrigins: ['https://www.lanzatealmundial.com']
     },
     log: {
         level: 'info'
@@ -46,7 +46,7 @@ module.exports = {
             production: false
         },
         app_info: {
-            web: 'https://www.quantumstore.com.mx/'
+            web: 'https://www.lanzatealmundial.com/'
         },
         reward_provider: {
             client_slug: 'quantumstore',
