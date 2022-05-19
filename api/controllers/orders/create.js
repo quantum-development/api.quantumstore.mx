@@ -101,6 +101,7 @@ module.exports = async (req, res) => {
                 imgThumbnail,
             };
         });
+        console.log("ITEEEEMS", JSON.parse(shopingItems));
 
         const chargeData = {
             source_id: cardData.cardId,
@@ -120,7 +121,7 @@ module.exports = async (req, res) => {
 
         // send email with rewards
         for (const item of shopingItems) {
-            console.log("controllers/orders/create.js", "item sending", item);
+            // console.log("controllers/orders/create.js", "item sending", item);
             const userApi = await sails.helpers.qrewardsApi(
                 item.digital_id, // digital_id,
                 item.amount, // digital_limit,
