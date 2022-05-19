@@ -13,6 +13,7 @@ module.exports = async (req, res) => {
     const { code } = req.allParams();
     const {
       name,
+      lastName,
       email,
       street,
       district,
@@ -21,12 +22,12 @@ module.exports = async (req, res) => {
     } = req.userInfo;
 
     const params = new URLSearchParams({
-      name,
+      name: [name, lastName].join(" "),
       conditions: true
     });
     // info params
     params.append("info[firstname]", name);
-    params.append("info[lastname]", name);
+    params.append("info[lastname]", lastName);
     params.append("info[email]", email);
     params.append("info[street]", street);
     params.append("info[district]", district);

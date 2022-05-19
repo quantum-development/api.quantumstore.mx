@@ -75,12 +75,31 @@ module.exports = async (req, res) => {
         }
 
         const shopingItems = items.map(async (item) => {
-            return await OrdersItems.create({
+            const {
+                id,
+                name,
+                digital_id,
+                price,
+                priceLabel,
+                purchaseOptions,
+                imgThumbnail,
+                promo_id
+            } = item;
+            const orderItem = await OrdersItems.create({
                 idOrder: createOrder.id,
-                idItem: item.id,
-                amount: item.amount,
-                price: item.price
-            });
+                idItem: id,
+                amount,
+                price
+            }).fetch();
+            return {
+                name,
+                ...orderItem,
+                digital_id,
+                promo_id,
+                priceLabel,
+                purchaseOptions,
+                imgThumbnail,
+            };
         });
 
         const chargeData = {
@@ -101,30 +120,37 @@ module.exports = async (req, res) => {
 
         // send email with rewards
         for (const item of shopingItems) {
-            console.log("controllers/orders/create.js", "item sending", item);
-            // const userApi = await sails.helpers.qrewardsApi(
-            //     item.digital_id, // digital_id,
-            //     item.amount, // digital_limit,
-            //     {
-            //         name: [req.userInfo.name, req.userInfo.lastName].join(' '),
-            //         email: req.userInfo.email,
-            //         info: {
-            //             userId: req.userInfo.id,
-            //             orderId: order.id,
-            //             orderUrl: sails.config.custom.app_info.web + 'order/' + order.id,
-            //             itemName: item.name,
-            //             itemAmount: item.amount,
-            //             priceLabel: item.priceLabel,
-            //             purchaseOptions: item.purchaseOptions,
-            //             imgThumbnail: sails.config.custom.app_info.web +
-            //                 'projects/qrewards' +
-            //                 item.imgThumbnail,
-            //             userUsername: req.userInfo.username,
-            //             phone: req.userInfo.phone
-            //         }
-            //     }, // data
-            //     item.promo_id // promo_id
-            // );
+            // console.log("controllers/orders/create.js", "item sending", item);
+            const userApi = await sails.helpers.qrewardsApi(
+                item.digital_id, // digital_id,
+                item.amount, // digital_limit,
+                {
+                    name: [req.userInfo.name, req.userInfo.lastName].join(' '),
+                    email: req.userInfo.email,
+                    info: {
+                        userId: req.userInfo.id,
+                        orderId: createOrder.id,
+                        orderUrl: sails.config.custom.app_info.web + 'order/' + createOrder.id,
+                        itemName: item.name,
+                        itemAmount: item.amount,
+                        priceLabel: item.priceLabel,
+                        purchaseOptions: item.purchaseOptions,
+                        imgThumbnail: sails.config.custom.app_info.web +
+                            'projects/qrewards' +
+                            item.imgThumbnail,
+                        userUsername: req.userInfo.username,
+                        phone: req.userInfo.phone
+                    }
+                }, // data
+                item.promo_id // promo_id
+            );
+
+            await OrdersItems.update({
+                // NOSONAR
+                id: item.id
+            }).set({
+                qrewards: JSON.stringify(userApi)
+            });
 
             // if (userApi) { // Has ike coupon
             //     const digital = userApi.rewards[0].digital.name;

@@ -34,7 +34,7 @@ module.exports = {
 
     exits: {},
 
-    fn: async function(inputs, exits) {
+    fn: async function (inputs, exits) {
         const client = sails.config.custom.reward_provider.client_slug;
         const process = {
             demo: sails.config.custom.reward_provider.demo,
@@ -50,53 +50,38 @@ module.exports = {
             ...inputs.data
         };
 
-        const userData = await fetch(`${sails.config.custom.reward_provider.url}sites/auth/webservice`, {
+        try {
+            const userData = await fetch(`${sails.config.custom.reward_provider.url}sites/auth/webservice`, {
                 method: "POST",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(process)
-            }).then((response) => response.json())
-            .then((res) => {
-                if (res.data) {
-                    return res.data;
-                } else {
-                    // throw res.error.description;
-                    throw "Error API logging";
-                }
-            })
-            .catch(function(error) {
-                throw 'error to api response';
-
             });
+            const token = await userData.json();
+            if (!res.data) {
+                throw "Error API logging";
+            }
 
-        const rewards = await fetch(`${sails.config.custom.reward_provider.url}sites/download/webservice?client=${client}`, {
+            const rewardsData = await fetch(`${sails.config.custom.reward_provider.url}sites/download/webservice?client=${client}`, {
                 method: "GET",
                 headers: {
-                    'X-API-KEY': userData.token
+                    'X-API-KEY': token
                 }
-            })
-            .then((response) => response.json())
-            .then((res) => {
-                if (res.data) {
-
-                    return res.data;
-                } else {
-                    throw "Error API getting reward";
-                }
-            })
-            .catch(function(error) {
-                console.error(error);
-                throw error.data.error.description;
-                // throw 'error to api response';
             });
+            const { data, error } = await rewardsData.json();
 
-        console.log('REWARDS_API', userData, rewards);
+            if (!data) {
+                throw error.data.error.description;
+            }
 
-        return exits.success({
-            user: userData,
-            rewards
-        });
+            return exits.success({
+                user: userData,
+                rewards: data
+            });
+        } catch (e) {
+            exits.error(e);
+        }
     }
 };
