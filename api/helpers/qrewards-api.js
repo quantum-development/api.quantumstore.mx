@@ -59,15 +59,15 @@ module.exports = {
                 },
                 body: JSON.stringify(process)
             });
-            const token = await userData.json();
-            if (!res.data) {
+            const { data: dataToken } = await userData.json();
+            if (!dataToken) {
                 throw "Error API logging";
             }
 
             const rewardsData = await fetch(`${sails.config.custom.reward_provider.url}sites/download/webservice?client=${client}`, {
                 method: "GET",
                 headers: {
-                    'X-API-KEY': token
+                    'X-API-KEY': dataToken.token
                 }
             });
             const { data, error } = await rewardsData.json();

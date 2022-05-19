@@ -6,6 +6,10 @@
  */
 module.exports = {
   attributes: {
+    uniqId: {
+      type: 'string',
+      required: false
+    },
     subtotal: {
       type: 'number',
       defaultsTo: 0,

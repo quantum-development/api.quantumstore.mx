@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
   try {
     const {
       id: cardId,
-      customer_id: keyCustomer
+      customer_id: keyCustomer,
     } = await sails.helpers.openpayCards(cardData, 'create');
 
     const idCustomer = req.customer.id;
