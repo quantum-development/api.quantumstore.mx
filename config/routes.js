@@ -92,6 +92,9 @@ module.exports.routes = {
   'GET /users/orders/find': {
     action: 'orders/find'
   },
+  'GET /users/orders/all': {
+    action: 'orders/all'
+  },
   // Notifications CODES
   'POST /notifications/contact': {
     action: 'notifications/contact'

@@ -95,7 +95,8 @@ module.exports.policies = {
   OrdersController: {
     '*': false,
     create: ['hasToken', 'orders/params', 'hasDeviceId', 'customer'],
-    find: ['hasToken']
+    find: ['hasToken'],
+    all: ['hasToken']
   },
   ServicesController: {
     '*': false,
