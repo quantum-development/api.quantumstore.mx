@@ -64,21 +64,23 @@ module.exports = {
                 throw "Error API logging";
             }
 
-            const rewardsData = await fetch(`${sails.config.custom.reward_provider.url}sites/download/webservice?client=${client}`, {
-                method: "GET",
-                headers: {
-                    'X-API-KEY': dataToken.token
+            const downloadSource = false;
+            if (downloadSource) {
+                const rewardsData = await fetch(`${sails.config.custom.reward_provider.url}sites/download/webservice?client=${client}`, {
+                    method: "GET",
+                    headers: {
+                        'X-API-KEY': dataToken.token
+                    }
+                });
+                const { data, error } = await rewardsData.json();
+                if (!data) {
+                    throw error.data.error.description;
                 }
-            });
-            const { data, error } = await rewardsData.json();
-
-            if (!data) {
-                throw error.data.error.description;
             }
 
             return exits.success({
-                user: userData,
-                rewards: data
+                record_id: dataToken.user.record.id,
+                session: dataToken.user.record.session
             });
         } catch (e) {
             exits.error(e);
