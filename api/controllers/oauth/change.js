@@ -6,8 +6,8 @@
  */
 module.exports = async (req, res) => {
   const params = req.allParams();
-  //Check username  token
-  if (req.userInfo.username !== params.username) {
+  //Check email  token
+  if (req.userInfo.email !== params.email) {
     return res.forbidden();
   }
   // Verify if the passwords are the same

@@ -10,14 +10,6 @@ const bcrypt = require('bcryptjs');
 module.exports = {
   schema: true,
   attributes: {
-    username: {
-      type: 'string',
-      required: true,
-      unique: true,
-      allowNull: false,
-      minLength: 6,
-      maxLength: 100
-    },
     password: {
       type: 'string',
       required: true,

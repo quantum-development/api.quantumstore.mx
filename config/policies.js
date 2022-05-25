@@ -15,7 +15,7 @@ module.exports.policies = {
     register: [
       'oauth/register',
       'userData',
-      'isTheUsernameTaken',
+      // 'isTheUsernameTaken',
       'isEmail',
       'isTheEmailTaken'
     ],

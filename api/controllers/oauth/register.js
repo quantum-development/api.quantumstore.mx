@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
 
   // Create new user
   let newUser = await Users.create({
-    username: params.username,
+    // username: params.username,
     password: params.password,
     name: params.name,
     lastName: params.lastName,

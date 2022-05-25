@@ -23,11 +23,11 @@ module.exports = {
 
   exits: {},
 
-  fn: async function(inputs, exits) {
+  fn: async function (inputs, exits) {
     // const passwordHash = farmhash.hash32(inputs.user.password);
     const payload = {
       user: inputs.user.id,
-      username: inputs.user.username,
+      email: inputs.user.email,
       // pwh: passwordHash,
       key: sails.config.custom.jwtKey
     };
@@ -50,8 +50,7 @@ module.exports = {
           VERIFICATIONPAGE: verification_url,
           USER_NAME: inputs.user.name,
           USER_LASTNAME: inputs.user.lastName,
-          USER_EMAIL: inputs.user.email,
-          USER_USERNAME: inputs.user.username
+          USER_EMAIL: inputs.user.email
         }
         // "MessageStream": "outbound"
       },

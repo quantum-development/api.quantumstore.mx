@@ -8,25 +8,22 @@
  */
 module.exports = async (req, res, next) => {
   /*******************
-   * USERNAME
+   * EMAIL
    ********************/
-  // Shouldn´t login user without username
-  // Shouldn´t login user with empty username
-  if (!req.body.username) {
+  // Shouldn´t login user without email
+  // Shouldn´t login user with empty email
+  if (!req.body.email) {
     return res.badRequest(
       {},
       {
-        message: 'The username is required'
+        message: 'The email is required'
       }
     );
   }
 
-  // Shouldn´t login user with invalid username
+  // Shouldn´t login user with invalid email
   const user = await Users.findOne({
-    or: [
-      { username: req.body.username},
-      { email: req.body.username }
-    ]
+    email: req.body.email
   }).intercept(_err => {
     return res.badRequest(
       {},

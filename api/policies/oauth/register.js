@@ -50,30 +50,18 @@ module.exports = async (req, res, next) => {
   }
 
   /**
-   * validate username
-   * username should be required
-   * username should be string
+   * validate email
+   * email should be required
+   * email should be string
    */
-  if (!req.body.username || !_.isString(req.body.username)) {
+  if (!req.body.email || !_.isString(req.body.email)) {
     return res.badRequest(
       {},
       {
-        message: 'The Username is required'
+        message: 'The Email is required'
       }
     );
   }
 
-  /**
-   * validate username
-   * username should be length between 6 to 100 chars
-   */
-  if (req.body.username.length < 6 || req.body.username.length > 100) {
-    return res.badRequest(
-      {},
-      {
-        message: 'The Username must be 6 to 100 chars'
-      }
-    );
-  }
   return next();
 };

@@ -151,7 +151,6 @@ module.exports = async (req, res) => {
                         imgThumbnail: sails.config.custom.app_info.web +
                             'projects/qrewards' +
                             imgThumbnail,
-                        userUsername: req.userInfo.username,
                         phoneNumber: req.userInfo.phone,
                         firstname: req.userInfo.name,
                         lastname: req.userInfo.lastName,

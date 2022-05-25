@@ -8,15 +8,15 @@
  */
 module.exports = (req, res, next) => {
   /*******************
-   * USERNAME
+   * EMAIL
    ********************/
-  // Shouldn´t reset user without username
-  // Shouldn´t reset user with empty username
-  if (!req.body.username) {
+  // Shouldn´t reset user without email
+  // Shouldn´t reset user with empty email
+  if (!req.body.email) {
     return res.badRequest(
       {},
       {
-        message: 'The username is required'
+        message: 'The email is required'
       }
     );
   }

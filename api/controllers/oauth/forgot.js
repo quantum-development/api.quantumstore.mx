@@ -6,7 +6,7 @@
  */
 module.exports = async (req, res) => {
   let user = await Users.findOne({
-    username: req.body.username
+    email: req.body.email
   }).intercept(_err => {
     return res.badRequest(
       {},
@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
 
   if (user) {
     // Generate temporal token
-    const resetToken = uuidv3(user.username, uuidv3.URL);
+    const resetToken = uuidv3(user.email, uuidv3.URL);
     // Update Reset Token Info
     await Users.update({
       id: user.id

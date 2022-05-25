@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     const userToken = await jwt.verify(params.token, sails.config.custom.jwtSecret);
 
     let userInfo = await Users.findOne({
-        username: userToken.username
+        email: userToken.email
     }).intercept(_err => {
         return res.badRequest(
             {},
@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
         return res.notFound(
             {},
             {
-                message: `The username doesn't exists`
+                message: `The email doesn't exists`
             }
         );
     }

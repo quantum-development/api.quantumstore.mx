@@ -25,7 +25,7 @@ module.exports = {
       type: 'string',
       allowNull: true
     },
-    username: {
+    email: {
       type: 'string',
       allowNull: true
     },
