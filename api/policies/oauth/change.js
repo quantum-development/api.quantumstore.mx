@@ -22,15 +22,15 @@ passSchema
   .digits(); // Must have digits
 module.exports = async (req, res, next) => {
   /**
-   * validate username
-   * username should be required
-   * username should be string
+   * validate email
+   * email should be required
+   * email should be string
    */
-  if (!req.body.username || !_.isString(req.body.username)) {
+  if (!req.body.email || !_.isString(req.body.email)) {
     return res.badRequest(
       {},
       {
-        message: 'The Username is required'
+        message: 'The Email is required'
       }
     );
   }
