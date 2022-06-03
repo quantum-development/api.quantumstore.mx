@@ -5,7 +5,7 @@ module.exports = (customer) => {
     const openpay = getOpenpay();
     openpay.customers.create(customer, (error, customer) => {
       if (error) {
-        resolve(false);
+        reject(error.description);
       }
       resolve(customer);
     });
