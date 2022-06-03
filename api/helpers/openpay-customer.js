@@ -35,13 +35,16 @@ module.exports = {
           return exits.error(e);
         }
         break;
-      default:
+      case 'create':
         try {
           res = await create(customerData);
         } catch (e) {
           return exits.error(e);
         }
         break;
+      default:
+        return exits.error("Invalid action");
+        break
     }
     return exits.success(res);
   }
