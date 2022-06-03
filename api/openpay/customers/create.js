@@ -1,7 +1,7 @@
 const getOpenpay = require('../index');
 
 module.exports = (customer) => {
-  return new Promise((resolve, _reject) => {
+  return new Promise((resolve, reject) => {
     const openpay = getOpenpay();
     openpay.customers.create(customer, (error, customer) => {
       if (error) {
