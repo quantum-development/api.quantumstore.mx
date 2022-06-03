@@ -43,7 +43,7 @@ module.exports = {
         openpay: {
             id: 'mftbtfod5nqirdntcwix',
             privateKey: 'pk_6a57e633105f42b190d71dea1107c768',
-            production: false
+            production: true
         },
         app_info: {
             web: 'https://www.lanzatealmundial.com/'
