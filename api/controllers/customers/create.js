@@ -21,6 +21,7 @@ module.exports = async (req, res) => {
       );
     }
     const customerData = {
+      customerId: req.userInfo.id,
       name: params.name,
       email: params.email,
       last_name: params.lastName,
