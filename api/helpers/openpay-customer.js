@@ -24,15 +24,23 @@ module.exports = {
     }
   },
   exits: {},
-  fn: async function(inputs, exits) {
+  fn: async function (inputs, exits) {
     let res = false;
     const customerData = inputs.customerData;
     switch (inputs.customerAction) {
       case 'find':
-        res = await findOne(customerData.customerId);
+        try {
+          res = await findOne(customerData.customerId);
+        } catch (e) {
+          return exits.error(e);
+        }
         break;
       default:
-        res = await create(customerData);
+        try {
+          res = await create(customerData);
+        } catch (e) {
+          return exits.error(e);
+        }
         break;
     }
     return exits.success(res);

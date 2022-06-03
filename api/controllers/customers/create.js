@@ -8,56 +8,42 @@
 module.exports = async (req, res) => {
   const params = req.allParams();
 
-  const customerFind = await Customers.findOne({
-    idUser: req.userInfo.id
-  }).intercept(_err => {
-    return res.badRequest(
-      {},
-      {
-        message: `There an error on DB`
-      }
-    );
-  });
+  try {
+    const customerFind = await Customers.findOne({
+      idUser: req.userInfo.id
+    });
+    if (customerFind) {
+      return res.badRequest(
+        {},
+        {
+          message: `The customer can't created`
+        }
+      );
+    }
+    const customerData = {
+      name: params.name,
+      email: params.email,
+      last_name: params.lastName,
+      required_account: false
+    };
 
-  if (customerFind) {
+    const customer = await sails.helpers.openpayCustomer(customerData, 'create');
+
+    // Customer creation
+    const createCustomer = await Customers.create({
+      customerId: customer.id,
+      idUser: req.userInfo.id
+    }).fetch();
+
+    return res.ok(createCustomer);
+
+  } catch (e) {
+    const error_message = `${e.raw || e.details || e}`;
     return res.badRequest(
       {},
       {
-        message: `The customer can't created`
+        message: `The customer can't created: ${error_message}`
       }
     );
   }
-
-  const customerData = {
-    name: params.name,
-    email: params.email,
-    last_name: params.lastName,
-    required_account: false
-  };
-
-  const customer = await sails.helpers.openpayCustomer(customerData, 'create');
-
-  if (!customer) {
-    return res.badRequest(
-      {},
-      {
-        message: `The customer can't created`
-      }
-    );
-  }
-
-  // Customer creation
-  const createCustomer = await Customers.create({
-    customerId: customer.id,
-    idUser: req.userInfo.id
-  }).intercept(_err => {
-    return res.badRequest(
-      {},
-      {
-        message: `There an error on DB`
-      }
-    );
-  }).fetch();
-
-  return res.ok(createCustomer);
 };
