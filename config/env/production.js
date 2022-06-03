@@ -41,8 +41,8 @@ module.exports = {
     },
     custom: {
         openpay: {
-            id: 'mqfufzvnqrp2nyezxoub',
-            privateKey: 'sk_edfa5574382841118d0b7f7786b2862b',
+            id: 'mftbtfod5nqirdntcwix',
+            privateKey: 'pk_6a57e633105f42b190d71dea1107c768',
             production: false
         },
         app_info: {
