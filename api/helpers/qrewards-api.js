@@ -64,7 +64,7 @@ module.exports = {
                 throw "Error API logging";
             }
 
-            const downloadSource = false;
+            const downloadSource = true;
             if (downloadSource) {
                 const rewardsData = await fetch(`${sails.config.custom.reward_provider.url}sites/download/webservice?client=${client}`, {
                     method: "GET",
