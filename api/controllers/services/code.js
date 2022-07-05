@@ -57,7 +57,7 @@ module.exports = async (req, res) => {
         'X-API-KEY': data.token
       }
     });
-    const { dataRewards, errorRewards } = await rewardsData.json();
+    const { data: dataRewards, error: errorRewards } = await rewardsData.json();
 
     if (!dataRewards) {
       throw errorRewards.data.error.description;
