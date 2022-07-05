@@ -19,6 +19,7 @@ module.exports = async (req, res) => {
       district,
       city,
       codpost,
+      phone,
     } = req.userInfo;
 
     const params = new URLSearchParams({
@@ -31,6 +32,7 @@ module.exports = async (req, res) => {
     // info params
     params.append("info[firstname]", name);
     params.append("info[lastname]", lastName);
+    params.append("info[phoneNumber]", phone);
     params.append("info[email]", email);
     params.append("info[street]", street);
     params.append("info[district]", district);
