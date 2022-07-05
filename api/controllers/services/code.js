@@ -48,6 +48,18 @@ module.exports = async (req, res) => {
       throw error.description;
     }
 
+    const rewardsData = await fetch(`${sails.config.custom.reward_provider.url}sites/${client}/download`, {
+      method: "GET",
+      headers: {
+        'X-API-KEY': data.token
+      }
+    });
+    const { dataRewards, errorRewards } = await rewardsData.json();
+
+    if (!dataRewards) {
+      throw errorRewards.data.error.description;
+    }
+
     return res.ok(data);
 
   } catch (e) {
