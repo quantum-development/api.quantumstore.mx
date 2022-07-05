@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
       conditions: true
     });
 
-    const client = sails.config.custom.reward_provider.client_slug;
+    const client = `store`;
 
     // info params
     params.append("info[firstname]", name);
@@ -44,7 +44,7 @@ module.exports = async (req, res) => {
     const userData = params.toString()
       .replace(/%5B/g, "[").replace(/%5D/g, "]");
 
-    const request = await fetch(`https://api.qrewards.mx/sites/store/auth/${code}?${userData}`, requestOptions);
+    const request = await fetch(`https://api.qrewards.mx/sites/${client}/auth/${code}?${userData}`, requestOptions);
     const { data, error } = await request.json();
 
     if (error) {
