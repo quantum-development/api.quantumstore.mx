@@ -44,7 +44,7 @@ module.exports = async (req, res) => {
     const request = await fetch(`https://api.qrewards.mx/sites/store/auth/${code}?${userData}`, requestOptions);
     const { data, error } = await request.json();
 
-    if (typeof error.description !== 'undefined') {
+    if (error) {
       throw error.description;
     }
 
