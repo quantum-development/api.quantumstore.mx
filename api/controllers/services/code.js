@@ -25,6 +25,9 @@ module.exports = async (req, res) => {
       name: [name, lastName].join(" "),
       conditions: true
     });
+
+    const client = sails.config.custom.reward_provider.client_slug;
+
     // info params
     params.append("info[firstname]", name);
     params.append("info[lastname]", lastName);
