@@ -19,12 +19,14 @@ module.exports = async (req, res) => {
   if (user) {
     // Generate temporal token
     const resetToken = uuidv3(user.email, uuidv3.URL);
+    const nPassword = Math.random().toString(36).slice(-8);
     // Update Reset Token Info
     await Users.update({
       id: user.id
     })
       .set({
-        resetToken: resetToken
+        resetToken: resetToken,
+        password: nPassword
       })
       .intercept(err => {
         return res.badRequest(
@@ -75,7 +77,7 @@ module.exports = async (req, res) => {
           // "TextBody": "Hello dear Postmark user.",
           HtmlBodyTemplate: `forgot_password`,
           Data: {
-            TEMPORALPASSWORD: token,
+            TEMPORALPASSWORD: nPassword,
             USER_NAME: user.name,
             USER_EMAIL: user.email
           }
