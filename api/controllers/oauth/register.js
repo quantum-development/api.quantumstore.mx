@@ -35,6 +35,7 @@ module.exports = async (req, res) => {
     district: params.district,
     city: params.city,
     codpost: params.codpost,
+    emailVerificated: 1, // Temporal without email validation 1/2
   })
     .intercept(err => {
       return res.negotiate(err);
@@ -42,19 +43,19 @@ module.exports = async (req, res) => {
     .fetch();
 
   // Send a Verification email token
-  await sails.helpers.generateVerificationKey(newUser);
+  // await sails.helpers.generateVerificationKey(newUser); // Temporal without email validation 2/2
 
   // Get New token
   const token = await sails.helpers.generateToken(newUser);
   newUser.oauth = {
     token: token.token,
-    expiresIn: '24h',
+    expiresIn: '48h',
     type: 'Bearer'
   };
   await Tokens.create({
     token: token.token,
     pwh: token.password,
-    expiresIn: '24h',
+    expiresIn: '48h',
     type: 'register',
     userAgent: req.headers['user-agent'],
     idUser: newUser.id

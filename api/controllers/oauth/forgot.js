@@ -42,13 +42,13 @@ module.exports = async (req, res) => {
     };
 
     let token = jwt.sign(payload, sails.config.custom.jwtSecret, {
-      expiresIn: '1h'
+      expiresIn: '48h'
     });
 
     await Tokens.create({
       token: token,
       rtkn: resetToken,
-      expiresIn: '1h',
+      expiresIn: '48h',
       type: 'reset',
       userAgent: req.headers['user-agent'],
       idUser: user.id
@@ -62,32 +62,31 @@ module.exports = async (req, res) => {
     });
 
     // encode el token para hacerlo url safe
-    // token = base64url.encode(token);
+    token = base64url.encode(token);
     // Enviar Email con el reset token
-    // if (user.emails[0].email) {
-    //   const urlResetPassword =
-    //     sails.config.custom.notifications.urlResetPassword;
-    //   const payloadEmail = {
-    //     to: user.emails[0].email,
-    //     subject: `Restablecimiento de contraseña`,
-    //     template: sails.config.custom.notifications.templateForgotPaswd, // NOSONAR
-    //     vars: {
-    //       name: user.firstName,
-    //       action_url: `${urlResetPassword}/${token}`
-    //     }
-    //   };
-    //   request({
-    //     method: 'POST',
-    //     uri: sails.config.custom.notifications.url + 'emails', // NOSONAR
-    //     form: payloadEmail,
-    //     headers: {
-    //       'x-system': sails.config.custom.notifications.idSystem, // NOSONAR
-    //       id: callId, // NOSONAR
-    //       app: sails.config.custom.app, // NOSONAR
-    //       version: sails.config.custom.version // NOSONAR
-    //     }
-    //   });
-    // }
+    if (user.email) {
+      const send = await sails.helpers.sendEmail(
+        'email',
+        {
+          From: 'Lánzate al Mundial',
+          To: user.email,
+          NameTo: user.name,
+          Subject: 'Recuperación de contraseña',
+          // "TextBody": "Hello dear Postmark user.",
+          HtmlBodyTemplate: `forgot_password`,
+          Data: {
+            TEMPORALPASSWORD: token,
+            USER_NAME: user.name,
+            USER_EMAIL: user.email
+          }
+          // "MessageStream": "outbound"
+        },
+        {}
+      );
+      return res.ok(null, {
+        message: 'Check your email and follow instructions.'
+      });
+    }
   }
   // Responder la peticion siempre
   return res.ok(null, {

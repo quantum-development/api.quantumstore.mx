@@ -38,10 +38,10 @@ module.exports = {
     const send = await sails.helpers.sendEmail(
       'email',
       {
-        From: 'QuantumStore',
+        From: 'Lánzate al Mundial',
         To: inputs.user.email,
         NameTo: inputs.user.name,
-        Subject: 'Bienvenido a QuantumStore',
+        Subject: 'Bienvenido a Lánzate al Mundial',
         // "TextBody": "Hello dear Postmark user.",
         HtmlBodyTemplate: `verification_email`,
         Data: {
